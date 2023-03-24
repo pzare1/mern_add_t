@@ -8,17 +8,20 @@ function App() {
   const [tasks, settasks] = useState([]);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch("http://localhost:5006/tasks", {
+    const respone = await fetch("http://localhost:5006/tasks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title }),
     });
+    const task = await respone.json();
+    settasks([...tasks,task]);
     setTitle("");
   };
   async function handleDelete (taskId:string) {
     await fetch(`http://localhost:5006/tasks/${taskId}`, {
       method: "DELETE",
     });
+    settasks(tasks.filter((task) => task._id !== taskId))
   }
   useEffect(() => {
     async function fetchData() {
