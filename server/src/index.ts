@@ -32,6 +32,14 @@ app.get('/tasks', async (req: Request, res: Response) => {
     const tasks = await Task.find();
     res.json(tasks);
 });
+app.delete('/tasks/:taskId', async (req: Request, res: Response) => {
+    //get it the task from url 
+    const taskId = req.params.taskId
+    //delete from mongo 
+    const task = await Task.findByIdAndDelete(taskId);
+    //return the deleted value
+    res.json(task);
+});
 
 mongoose.connect(process.env.DB_URL!)
     .then(() => {
